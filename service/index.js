@@ -13,7 +13,8 @@ class TopicService {
       findExistingSubscriptions: this.findExistingSubscriptions,
       findSubscribers: this.findSubscribers,
       createNotification: this.createNotification,
-      findNotification: this.findNotification
+      findNotification: this.findNotification,
+      recentNofitications: this.recentNofitications
     };
   }
 
@@ -63,6 +64,10 @@ class TopicService {
       })
       .value();
   };
+
+  recentNofitications = ()=>{
+    return this.notifications.findLast().value()
+  }
 
 }
 

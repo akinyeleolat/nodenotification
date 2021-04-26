@@ -2,7 +2,11 @@ const apiCall = require("axios");
 const TopicService = require("../service");
 const logger = require("../utils/Logger");
 
+const TopicEventManager = require('./topicEventManager');
+
 const topicService = new TopicService();
+
+const topicEventManager = new TopicEventManager();
 
 const publishTopic = async (url, topic, data) => {
   try {
@@ -34,7 +38,6 @@ const processPublishing = async (
   data,
   subscribers,
   timestamp,
-  res
 ) => {
   try {
     const subscriberServerUrlList = subscribers.map((subs) => subs.url);
@@ -84,13 +87,16 @@ const processPublishing = async (
       timestamp,
     };
 
-    logger.info(JSON.stringify(feedbackData));
-    console.log('feedback', feedbackData)
-    return topicService.createNotification(feedbackData);
+    return  topicEventManager.notification(feedbackData);
   } catch (error) {
     return error;
   }
 };
+
+topicEventManager.on("notification", (notification) => {
+  console.log('notification',notification);
+  topicService.createNotification(notification);
+});
 
 module.exports = {
   processSubscription,

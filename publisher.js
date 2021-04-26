@@ -46,10 +46,15 @@ pub.post("/publish/:topic", async (req, res) => {
 
     topicEventManager.publish(publishId, topic, data);
 
-    res.status(200).json({
-      topic,
-      data,
+    res.status(200).send({
+      message: topicService.recentNofitications(),
     });
+    //TODO: fine tune for accuracy
+    // topicEventManager.on('notification',(notification)=>{
+    //   res.status(200).send({
+    //   notification
+    // });
+    // })
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -75,6 +80,12 @@ logger.info(
   `We now have: ${topicEventManager.listenerCount(
     "publish"
   )} listener(s) for the topic publishing event`
+);
+
+logger.info(
+  `We now have: ${topicEventManager.listenerCount(
+    "notification"
+  )} listener(s) for the subscriber notification event`
 );
 
 pub.listen(port, () => {

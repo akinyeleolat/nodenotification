@@ -9,7 +9,8 @@
     "watch-pub": "nodemon publisher.js",
     "watch-sub": "nodemon subscriber.js",
     "start-pub": "node publisher.js",
-    "start-sub": "node subscriber.js"
+    "start-sub": "node subscriber.js",
+    "start":"concurrently \"npm:start-*\""
   },
   "nodemonConfig": {
     "ignore": [
