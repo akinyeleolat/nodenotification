@@ -1,5 +1,5 @@
 const EventEmitter = require("events");
-const TopicService = require('../service')
+const TopicService = require("../service");
 
 const topicService = new TopicService();
 
@@ -24,6 +24,10 @@ class TopicEventManager extends EventEmitter {
     const subscribers = topicService.findSubscribers({ topic });
 
     this.emit("publish", publishId, topic, data, subscribers, Date.now());
+  }
+
+  notification(notification) {
+    this.emit("notification", notification);
   }
 }
 
