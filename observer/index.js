@@ -1,5 +1,6 @@
 const apiCall = require("axios");
 const TopicService = require("../service");
+const logger = require("../utils/Logger");
 
 const topicService = new TopicService();
 
@@ -32,7 +33,8 @@ const processPublishing = async (
   topic,
   data,
   subscribers,
-  timestamp,res
+  timestamp,
+  res
 ) => {
   try {
     const subscriberServerUrlList = subscribers.map((subs) => subs.url);
@@ -73,9 +75,16 @@ const processPublishing = async (
       data,
       success,
       fail: rejected,
-      status: rejected.length === 0 && success.length===0?'No subscribers for the topic':rejected.length > 0 ? "uncompleted" : "completed" ,
+      status:
+        rejected.length === 0 && success.length === 0
+          ? "No subscribers for the topic"
+          : rejected.length > 0
+          ? "uncompleted"
+          : "completed",
       timestamp,
     };
+
+    logger.info(JSON.stringify(feedbackData));
     console.log('feedback', feedbackData)
     return topicService.createNotification(feedbackData);
   } catch (error) {
